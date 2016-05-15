@@ -1,0 +1,13 @@
+C:\Users\Miiguel\Dropbox\1DAM\Programacion\Stardbound\Stardbound\bin\Debug\Stardbound.exe.config
+C:\Users\Miiguel\Dropbox\1DAM\Starbound\Stardbound\bin\Debug\Stardbound.exe.config
+C:\Users\Miiguel\Dropbox\1DAM\Starbound\Stardbound\obj\Debug\Stardbound.csprojResolveAssemblyReference.cache
+C:\Users\Miiguel\Dropbox\1DAM\Starbound\Stardbound\bin\Debug\Stardbound.exe
+C:\Users\Miiguel\Dropbox\1DAM\Starbound\Stardbound\bin\Debug\Stardbound.pdb
+C:\Users\Miiguel\Dropbox\1DAM\Starbound\Stardbound\obj\Debug\Stardbound.exe
+C:\Users\Miiguel\Dropbox\1DAM\Starbound\Stardbound\obj\Debug\Stardbound.pdb
+C:\Users\migue\Dropbox\1DAM\Starbound\Stardbound\bin\Debug\Stardbound.exe.config
+C:\Users\migue\Dropbox\1DAM\Starbound\Stardbound\obj\Debug\Stardbound.exe
+C:\Users\migue\Dropbox\1DAM\Starbound\Stardbound\obj\Debug\Stardbound.pdb
+C:\Users\migue\Dropbox\1DAM\Starbound\Stardbound\bin\Debug\Stardbound.exe
+C:\Users\migue\Dropbox\1DAM\Starbound\Stardbound\bin\Debug\Stardbound.pdb
+C:\Users\migue\Dropbox\1DAM\Starbound\Stardbound\obj\Debug\Stardbound.csprojResolveAssemblyReference.cache
