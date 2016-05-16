@@ -27,8 +27,8 @@ class Player : Sprite
         x = 480;
         y = 368;
         xSpeed = 8;
-        ySpeed = 8;
-        width = 64;
+        ySpeed = 16;
+        width = 32;
         height = 63;
         jumpXspeed = 0;
         jumping = false;
