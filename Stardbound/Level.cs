@@ -50,7 +50,7 @@ class Level
     }
     public void DrawOnHiddenScreen()
     {
-        Hardware.DrawHiddenImage(bg, player.GetX() - 480, 0);
+        Hardware.DrawHiddenImage(bg, player.GetX() - 480, -50);
         for (int row = 0; row < levelHeight; row++)
             for (int col = 0; col < levelWidth; col++)
             {
