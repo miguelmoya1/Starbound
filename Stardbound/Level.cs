@@ -5,7 +5,7 @@ class Level
 {
     byte tileWidth, tileHeight;
     short levelWidth, levelHeight;
-    byte leftMargin, topMargin, rigthMargin, bottomMargin;
+    byte leftMargin, topMargin;
     string[] levelDescription;
     Image floor, bg;
     Player player;
@@ -17,8 +17,6 @@ class Level
         levelWidth = 511;
         levelHeight = 121;
         leftMargin = 64;
-        rigthMargin = 64;
-        bottomMargin = 64;
         topMargin = 64;
         player = p;
 

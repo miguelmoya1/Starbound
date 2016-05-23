@@ -22,8 +22,7 @@
             Hardware.DrawHiddenImage(quit, 0, 500);
             Hardware.ShowHiddenScreen();
 
-            if (Mouse.ColisionWith(0, 450, 334, 495, true) ||
-                Hardware.KeyPressed(Hardware.KEY_P))
+            if (Mouse.ColisionWith(0, 450, 334, 495, true))
             {
                 validOptionChosen = true;
                 optionChosen = options.Play;

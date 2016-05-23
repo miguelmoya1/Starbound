@@ -25,7 +25,9 @@ class Player : Sprite
         ChangeDirection(RIGHT);
 
         x = 480;
+        startX = x;
         y = 368;
+        startY = y;
         xSpeed = 8;
         ySpeed = 8;
         width = 32;
@@ -42,9 +44,14 @@ class Player : Sprite
         this.height = h;
     }
 
-    public void SetY(int y)
+    public int GetStartX()
     {
-        this.y = y;
+        return startX;
+    }
+
+    public int GetStartY()
+    {
+        return startY;
     }
 
     public void MoveRight()

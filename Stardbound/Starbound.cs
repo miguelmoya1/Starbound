@@ -15,9 +15,6 @@
             {
                 Game myGame = new Game();
                 myGame.Run();
-
-                GameOverScreen gameEnd = new GameOverScreen();
-                gameEnd.Run();
             }
 
             if (welcome.GetOptionChosen() == WelcomeScreen.options.Quit)

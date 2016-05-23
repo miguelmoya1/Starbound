@@ -47,9 +47,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enemy.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameOverScreen.cs" />
     <Compile Include="Hardware.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Level.cs" />

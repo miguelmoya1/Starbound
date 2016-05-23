@@ -35,6 +35,15 @@
         LoadImage(imageName);
     }
 
+    public void SetX(int x)
+    {
+        this.x = x;
+    }
+    public void SetY(int y)
+    {
+        this.y = y;
+    }
+
     public Sprite(string[] imageNames)
         : this()
     {
