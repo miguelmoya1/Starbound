@@ -146,15 +146,18 @@ class Player : Sprite
             }
         }
     }
-
-    public void Break(Level CurrentLevel)
+    /// <summary>
+    /// To break the stone
+    /// </summary>
+    /// <param name="CurrentLevel"></param>
+    public bool Break(Level CurrentLevel, int x, int y)
     {
-        int xMouse = (Mouse.GetX() + (x - 545)) / 16;
-        int yMouse = (Mouse.GetY() + (y - 433)) / 16;
-        if (CurrentLevel.GetPosicion((short)xMouse, (short)yMouse) == '_'
+        if (CurrentLevel.GetPosicion((short)x, (short)y) == '_'
             && Mouse.Clic() == 1)
         {
-            CurrentLevel.DeletePosition((short)xMouse, (short)yMouse);
+            CurrentLevel.DeletePosition((short)x, (short)y);
+            return true;
         }
+        return false;
     }
 }

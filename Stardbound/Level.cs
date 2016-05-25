@@ -3,49 +3,94 @@ using System.IO;
 
 class Level
 {
-    byte tileWidth, tileHeight;
+
+    byte tileWidth, tileHeight, currentLevel;
     short levelWidth, levelHeight;
     byte leftMargin, topMargin;
     string[] levelDescription;
     Image floor, bg;
     Player player;
 
-    public Level(Player p)
+    public Level(Player p, byte l)
     {
         tileWidth = 16;
         tileHeight = 16;
-        levelWidth = 511;
-        levelHeight = 121;
+        if (l == 0)
+        {
+            levelWidth = 511;
+            levelHeight = 121;
+        }
+        else if (l == 1)
+        {
+            levelWidth = 87;
+            levelHeight = 26;
+        }
         leftMargin = 64;
         topMargin = 64;
         player = p;
+        currentLevel = l;
 
-        levelDescription = new string[121];
-        try
-        {
-            StreamReader file = File.OpenText("map.sb");
-            string line;
-            int i = 0;
-            do
-            {
-                line = file.ReadLine();
-                if (line != null)
-                {
-                    levelDescription[i] = line;
-                    i++;
-                }
-            }
-            while (line != null);
-            file.Close();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error: " + ex.Message);
-        }
+        levelDescription = new string[levelHeight];
 
+        LoadMap(currentLevel);
         floor = new Image("data\\floor.jpg");
         bg = new Image("data\\bgg.jpg");
     }
+
+    public void LoadMap(byte map)
+    {
+        switch (map)
+        {
+            case 0:
+                try
+                {
+                    StreamReader file = File.OpenText("map.sb");
+                    string line;
+                    int i = 0;
+                    do
+                    {
+                        line = file.ReadLine();
+                        if (line != null)
+                        {
+                            levelDescription[i] = line;
+                            i++;
+                        }
+                    }
+                    while (line != null);
+                    file.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+                break;
+            case 1:
+                try
+                {
+                    StreamReader file = File.OpenText("home.sb");
+                    string line;
+                    int i = 0;
+                    do
+                    {
+                        line = file.ReadLine();
+                        if (line != null)
+                        {
+                            levelDescription[i] = line;
+                            i++;
+                        }
+                    }
+                    while (line != null);
+                    file.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+                break;
+        }
+    }
+
+
     public void DrawOnHiddenScreen()
     {
         Hardware.DrawHiddenImage(bg, player.GetX() - 480, -50);

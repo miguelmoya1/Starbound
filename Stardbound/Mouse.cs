@@ -1,5 +1,4 @@
-﻿
-class Mouse
+﻿class Mouse
 {
     public static bool ColisionWith(int xMin, int yMin, int xMax, int yMax,
             bool clic)
@@ -14,16 +13,6 @@ class Mouse
         else 
             if (mouse == 4 && ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax)))
                 return true;
-        return false;
-    }
-
-
-    public static bool ColisionWith(int xMin, int yMin, int xMax, int yMax)
-    {
-        int x, y;
-        int mouse = Hardware.GetMouse(out x, out y);
-        if ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax))
-            return true;
         return false;
     }
 

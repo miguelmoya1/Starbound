@@ -52,6 +52,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Hardware.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Mouse.cs" />
     <Compile Include="Player.cs" />

@@ -27,20 +27,30 @@ class Enemy : Sprite
         {
             y += ySpeed;
         }
-        else if (x - p.GetX() < -150 && x - p.GetX() < 0)
+        else if (p.GetX() - x > -350 && p.GetX() - x < 0)
         {
-            if (!currentLevel.IsValidMove(x + xSpeed, y, x + width + xSpeed,
+            if (currentLevel.IsValidMove(x + xSpeed, y, x + width + xSpeed,
                     y + height))
-                x += xSpeed;
+            {
+                if (xSpeed > 0)
+                    xSpeed = -xSpeed;
+            }
+            else
+                xSpeed = -xSpeed;
         }
-        else if (x - p.GetX() > 150 && x - p.GetX() > 0)
+        else if (p.GetX() - x < 350 && p.GetX() - x > 0)
         {
-            if (!currentLevel.IsValidMove(x - xSpeed, y, x + width - xSpeed,
+            if (currentLevel.IsValidMove(x - xSpeed, y, x + width - xSpeed,
                     y + height))
-                x -= xSpeed;
+            {
+                if (xSpeed < 0)
+                    xSpeed = -xSpeed;
+            }
+            else
+                xSpeed = -xSpeed;
         }
         else if (!currentLevel.IsValidMove(x - xSpeed, y, x + width - xSpeed,
-                y + height))
+                    y + height))
         {
             xSpeed = -xSpeed;
         }
@@ -49,11 +59,12 @@ class Enemy : Sprite
         {
             xSpeed = -xSpeed;
         }
+        x += xSpeed;
+
         if (xSpeed < 0)
             ChangeDirection(LEFT);
         else
             ChangeDirection(RIGHT);
-        x = (short)(x + xSpeed);
         NextFrame();
     }
 }
