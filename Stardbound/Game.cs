@@ -60,8 +60,7 @@ class Game
             PauseTillNextFrame();
         }
     }
-
-
+    
     public void DrawElements()
     {
         Hardware.ClearScreen();
