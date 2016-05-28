@@ -10,6 +10,8 @@
         Image bg = new Image("data/bg.jpg");
         Image single = new Image("data/SinglePlayer.png");
         Image quit = new Image("data/Quit.png");
+        Font font18 = new Font("data/Joystix.ttf", 18);
+
 
         bool validOptionChosen = false;
 
@@ -20,7 +22,16 @@
             Hardware.DrawHiddenImage(ws, 130, 50);
             Hardware.DrawHiddenImage(single, 0, 450);
             Hardware.DrawHiddenImage(quit, 0, 500);
+            Hardware.WriteHiddenText("Clic W/A/S/D to move and clic to break the floor",
+                    20, 10,
+                    0xCC, 0xCC, 0xCC,
+                    font18);
+            Hardware.WriteHiddenText("Clic ESC to open exit menu when you are at game",
+                    20, 30,
+                    0xCC, 0xCC, 0xCC,
+                    font18);
             Hardware.ShowHiddenScreen();
+           
 
             if (Mouse.ColisionWith(0, 450, 334, 495, true))
             {

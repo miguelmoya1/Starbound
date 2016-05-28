@@ -8,7 +8,7 @@ class Level
     short levelWidth, levelHeight;
     byte leftMargin, topMargin;
     string[] levelDescription;
-    Image floor, bg;
+    Image floor, bg, lava;
     Player player;
 
     public Level(Player p, byte l)
@@ -22,8 +22,8 @@ class Level
         }
         else if (l == 1)
         {
-            levelWidth = 87;
-            levelHeight = 26;
+            levelWidth = 82;
+            levelHeight = 23;
         }
         leftMargin = 64;
         topMargin = 64;
@@ -33,8 +33,18 @@ class Level
         levelDescription = new string[levelHeight];
 
         LoadMap(currentLevel);
-        floor = new Image("data\\floor.jpg");
-        bg = new Image("data\\bgg.jpg");
+        if (currentLevel == 0)
+        {
+            floor = new Image("data\\floor.jpg");
+            bg = new Image("data\\bgg.jpg");
+            lava = new Image("data\\lava.png");
+        }
+        else
+        {
+            floor = new Image("data\\floor.jpg");
+            bg = new Image("data\\shed.png");
+            lava = new Image("data\\lava.png");
+        }
     }
 
     public void LoadMap(byte map)
@@ -90,10 +100,13 @@ class Level
         }
     }
 
+    public Image GetBackGround()
+    {
+        return bg;
+    }
 
     public void DrawOnHiddenScreen()
     {
-        Hardware.DrawHiddenImage(bg, player.GetX() - 480, -50);
         for (int row = 0; row < levelHeight; row++)
             for (int col = 0; col < levelWidth; col++)
             {
@@ -102,6 +115,7 @@ class Level
                 switch (levelDescription[row][col])
                 {
                     case '_': Hardware.DrawHiddenImage(floor, xPos, yPos); break;
+                    case 'L': Hardware.DrawHiddenImage(lava, xPos, yPos); break;
                 }
             }
     }
@@ -134,7 +148,7 @@ class Level
             {
                 char tileType = levelDescription[row][col];
                 // If we don't need to check collisions with this tile, we skip it
-                if ((tileType == '.') || (tileType == 'z'))
+                if ((tileType == '.') || (tileType == 'L'))
                     continue;
                 // Otherwise, lets calculate its corners and check rectangular collisions
                 int xPos = leftMargin + col * tileWidth;

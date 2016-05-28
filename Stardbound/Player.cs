@@ -1,14 +1,17 @@
 ﻿
+using System.Collections.Generic;
+
 class Player : Sprite
 {
     protected Game myGame;
+    protected List<Item> inventory;
     protected bool jumping, falling;
     protected int jumpXspeed;
     protected int jumpFrame;
     protected int[] jumpSteps =
     {
-            -32, -32, -32, -32, -16, -16, -16, -16, -16, -16, -8, -8, -8, -4, -4, -1, -1, 0,
-            0, 1, 1, 4, 4, 8, 8, 8, 8, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32
+             -32, -32, -32, -16, -16, -16, -16, -8, -8, -4, -4, -1, -1, 0,
+            0, 1, 1, 4, 4, 8, 8, 16, 16, 16, 16, 32, 32, 32
     };
 
     public Player(Game g)
@@ -24,6 +27,7 @@ class Player : Sprite
 
         ChangeDirection(RIGHT);
 
+        inventory = new List<Item>();
         x = 480;
         startX = x;
         y = 368;
@@ -36,12 +40,6 @@ class Player : Sprite
         jumping = false;
         jumpFrame = 0;
         falling = false;
-    }
-
-
-    public void SetHeight(int h)
-    {
-        this.height = h;
     }
 
     public int GetStartX()
@@ -75,12 +73,7 @@ class Player : Sprite
             NextFrame();
         }
     }
-
-    public void MoveUp()
-    {
-        Jump();
-    }
-
+    
     public void Jump()
     {
         if (jumping || falling)
@@ -159,5 +152,26 @@ class Player : Sprite
             return true;
         }
         return false;
+    }
+
+
+    public void AddToInventory(Item toAdd)
+    {
+        inventory.Add(toAdd);
+    }
+
+    public void RemoveInventory()
+    {
+        // TO DO
+    }
+
+    public bool ContainsItems()
+    {
+        return inventory.Count > 0;
+    }
+
+    public Item GetItemAt(int i)
+    {
+        return inventory[i];
     }
 }

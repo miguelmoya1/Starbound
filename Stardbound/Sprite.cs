@@ -22,8 +22,8 @@
     {
         startX = 480;
         startY = 568;
-        width = 64;
-        height = 64;
+        width = 16;
+        height = 16;
         visible = true;
         sequence = new Image[numDirections][];
         currentDirection = RIGHT;
