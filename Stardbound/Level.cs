@@ -122,14 +122,11 @@ class Level
 
     public char GetPosicion(short x, short y)
     {
-        try
-        {
+        if (x < levelWidth && y < levelHeight &&
+            x >= 0 && y >= 0)
             return levelDescription[y][x];
-        }
-        catch (Exception)
-        {
+        else
             return ' ';
-        }
     }
 
 
