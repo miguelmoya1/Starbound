@@ -8,12 +8,12 @@ class Game
     private List<Item> item;
     private bool finished;
     private int lives, x, y, vulnerable, sleepHome;
-    private byte levels, levelActual, lastLevel, actualItem;
+    private byte levels, levelActual, lastLevel, actualItem, delay;
     private Level[] currentLevel;
     private List<Enemy> enemy;
-    private Tool playerBar, gameMenu, rightBar, topBar;
-    private bool keyESCPresed;
-    private Weapon weapon; // TO DO IN TOPBAR!!
+    private Tool playerBar, gameMenu, rightBar, topBar;//<---
+    private bool keyESCPresed; //                            |
+    private Weapon weapon; // TO DO IN TOPBAR!! -------------
 
 
     public Game()
@@ -25,11 +25,12 @@ class Game
         topBar = new Tool(new Sprite("data/topBar.png"));
         keyESCPresed = false;
         finished = false;
-        weapon = new Weapon(5);
+        weapon = new Weapon(15);
         levels = 2;
         actualItem = 0;
         levelActual = 0;
         sleepHome = 0;
+        delay = 0;
         item = new List<Item>();
         player = new Player(this);
         lives = 100;
@@ -87,8 +88,8 @@ class Game
             if (levelActual == 1)
             {
                 // To move to player to correct position
-                const int up = -97;
-                player.SetY(player.GetY() + up);
+                const int UP = -97;
+                player.SetY(player.GetY() + UP);
             }
         }
 
@@ -216,23 +217,29 @@ class Game
 
         // 1 is Left clic
         if (actualItem == 2)
-            if (Mouse.Clic() == 1)
+            if (delay <= 0)
             {
-                if (weapon.currentDirection == 0)
+                if (Mouse.Clic() == 1)
                 {
-                    const int DESPLACEX = 50, DESPLACEY = 30;
-                    weapon.Shot(this, player.GetX() + DESPLACEX
-                        , player.GetY() + DESPLACEY);
-                }
-                else
-                {
-                    const int DESPLACEX = 25, DESPLACEY = 30;
-                    weapon.Shot(this, player.GetX() - DESPLACEX
-                        , player.GetY() + DESPLACEY);
+                    delay = 5;
+                    if (weapon.currentDirection == 0)
+                    {
+                        const int DESPLACEX = 50, DESPLACEY = 30;
+                        weapon.Shot(this, player.GetX() + DESPLACEX
+                            , player.GetY() + DESPLACEY);
+                    }
+                    else
+                    {
+                        const int DESPLACEX = 25, DESPLACEY = 30;
+                        weapon.Shot(this, player.GetX() - DESPLACEX
+                            , player.GetY() + DESPLACEY);
+                    }
                 }
             }
+            else
+                delay--;
 
-        yMouse = Mouse.GetY() + toMoveY;
+                yMouse = Mouse.GetY() + toMoveY;
         xMouse = Mouse.GetX() + toMoveX;
 
         // Time to cant use the buttom to go Home
