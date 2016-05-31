@@ -2,6 +2,7 @@
 class Enemy : Sprite
 {
     Level currentLevel;
+    int live;
 
     public Enemy(int newX, int newY, Level g)
     {
@@ -15,6 +16,7 @@ class Enemy : Sprite
         ySpeed = 1;
         width = 64;
         height = 64;
+        live = 100;
         currentLevel = g;
         ChangeDirection(RIGHT);
 
@@ -66,6 +68,16 @@ class Enemy : Sprite
         else
             ChangeDirection(RIGHT);
         NextFrame();
+    }
+
+    public void SetLive(int live)
+    {
+        this.live = live;
+    }
+
+    public int GetLive()
+    {
+        return live;
     }
 }
 

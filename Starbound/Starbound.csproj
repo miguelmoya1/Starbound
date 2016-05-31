@@ -7,8 +7,8 @@
     <ProjectGuid>{43A21ED0-D73D-4138-91C3-1531DB98D905}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stardbound</RootNamespace>
-    <AssemblyName>Stardbound</AssemblyName>
+    <RootNamespace>Starbound</RootNamespace>
+    <AssemblyName>Starbound</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -56,10 +56,12 @@
     <Compile Include="Level.cs" />
     <Compile Include="Mouse.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Shot.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Starbound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool.cs" />
+    <Compile Include="Weapon.cs" />
     <Compile Include="WelcomeScreen.cs" />
   </ItemGroup>
   <ItemGroup>

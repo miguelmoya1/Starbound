@@ -7,12 +7,13 @@ class Game
     private Player player;
     private List<Item> item;
     private bool finished;
-    private int lives, x, y, enemies, vulnerable, sleepHome;
-    private byte levels, levelActual, lastLevel;
+    private int lives, x, y, vulnerable, sleepHome;
+    private byte levels, levelActual, lastLevel, actualItem;
     private Level[] currentLevel;
-    private Enemy[] enemy;
+    private List<Enemy> enemy;
     private Tool playerBar, gameMenu, rightBar, topBar;
     private bool keyESCPresed;
+    private Weapon weapon; // TO DO IN TOPBAR!!
 
 
     public Game()
@@ -24,7 +25,9 @@ class Game
         topBar = new Tool(new Sprite("data/topBar.png"));
         keyESCPresed = false;
         finished = false;
+        weapon = new Weapon(5);
         levels = 2;
+        actualItem = 0;
         levelActual = 0;
         sleepHome = 0;
         item = new List<Item>();
@@ -35,14 +38,13 @@ class Game
         currentLevel = new Level[levels];
         for (byte i = 0; i < levels; i++)
             currentLevel[i] = new Level(player, i);
-        enemies = 5;
         Random r = new Random();
-        enemy = new Enemy[enemies];
-        for (int i = 0; i < enemies; i++)
+        enemy = new List<Enemy>();
+        for (int i = 0; i < 6; i++)
         {
             int xEnemy = r.Next(600, 2500);
             int yEnemy = r.Next(300, 400);
-            enemy[i] = new Enemy(xEnemy, yEnemy, currentLevel[levelActual]);
+            enemy.Add(new Enemy(xEnemy, yEnemy, currentLevel[levelActual]));
         }
         vulnerable = 0;
     }
@@ -72,6 +74,11 @@ class Game
             Hardware.DrawHiddenImage(currentLevel[levelActual].GetBackGround(), 0, 0);
 
         player.DrawOnHiddenScreen();
+        if (actualItem == 2)
+        {
+            weapon.DrawOnHiddenScreen();
+        }
+        weapon.DrawShot();
         currentLevel[levelActual].DrawOnHiddenScreen();
 
         if (lastLevel != levelActual)
@@ -83,7 +90,6 @@ class Game
                 const int up = -97;
                 player.SetY(player.GetY() + up);
             }
-
         }
 
 
@@ -94,7 +100,7 @@ class Game
                 item[i].DrawOnHiddenScreen();
 
         if (levelActual == 0)
-            for (int i = 0; i < enemies; i++)
+            for (int i = 0; i < enemy.Count; i++)
                 enemy[i].DrawOnHiddenScreen();
 
         if (keyESCPresed)
@@ -113,7 +119,6 @@ class Game
     {
         int toMoveX = player.GetX() - player.GetStartX();
 
-
         playerBar.SetX(toMoveX);
 
         const int WIDHT = 300;
@@ -126,6 +131,18 @@ class Game
         rightBar.SetX(toMoveX + WIDHTRIGHTBAR);
 
         int xMouse = Mouse.GetX() + toMoveX;
+        if (xMouse < player.GetX())
+        {
+            const int DESPLACEWEAPONX = 22;
+            weapon.SetX(player.GetX() - DESPLACEWEAPONX);
+        }
+        else
+        {
+            const int DESPLACEWEAPONX = 22;
+            weapon.SetX(player.GetX() + DESPLACEWEAPONX);
+        }
+        const int DESPLACEWEAPONY = 29;
+        weapon.SetY(player.GetY() + DESPLACEWEAPONY);
     }
 
 
@@ -138,22 +155,39 @@ class Game
         int xMouse = (Mouse.GetX() + (x - HEIGHTI));
         int yMouse = (Mouse.GetY() + (y - WIGTHI));
 
-        // Break the stone
-        if (player.Break(currentLevel[levelActual], xMouse / 16,
-            yMouse / 16))
+        if (actualItem == 2)
         {
-            const int AJUSTINGL = 60, AJUSTINGT = 60;
-            item.Add(new Item(xMouse + AJUSTINGL, yMouse + AJUSTINGT
-                , '_', currentLevel[levelActual]));
-            player.Break(currentLevel[levelActual], xMouse / 16,
-            yMouse / 16);
+            const byte RIGHT = 0, LEFT = 1;
+            if (xMouse < player.GetX())
+            {
+                weapon.ChangeDirection(LEFT);
+                player.ChangeDirection(LEFT);
+            }
+            else
+            {
+                weapon.ChangeDirection(RIGHT);
+                player.ChangeDirection(RIGHT);
+            }
         }
 
+        // Break the stone
+        if (actualItem != 2)
+            if (player.Break(currentLevel[levelActual], xMouse / 16,
+                yMouse / 16))
+            {
+                const int AJUSTINGL = 60, AJUSTINGT = 60;
+                item.Add(new Item(xMouse + AJUSTINGL, yMouse + AJUSTINGT
+                    , '_', currentLevel[levelActual]));
+                player.Break(currentLevel[levelActual], xMouse / 16,
+                yMouse / 16);
+            }
+
         player.Move();
+        weapon.MoveShot(player.GetX());
 
         // if isn't at base, then move the enemies
         if (levelActual == 0)
-            for (int i = 0; i < enemies; i++)
+            for (int i = 0; i < enemy.Count; i++)
                 enemy[i].Move(player);
 
 
@@ -171,7 +205,7 @@ class Game
         }
 
         rightBar.SetY(toMoveY);
-        
+
         const int WIDHTRIGHTBAR = 980;
         const int MARGINRIGHT = WIDHTRIGHTBAR + 36;
         const int MARGINTOP1 = 242;
@@ -179,7 +213,25 @@ class Game
         const int WIDHT = 300;
 
         int toMoveX = player.GetX() - player.GetStartX();
-        
+
+        // 1 is Left clic
+        if (actualItem == 2)
+            if (Mouse.Clic() == 1)
+            {
+                if (weapon.currentDirection == 0)
+                {
+                    const int DESPLACEX = 50, DESPLACEY = 30;
+                    weapon.Shot(this, player.GetX() + DESPLACEX
+                        , player.GetY() + DESPLACEY);
+                }
+                else
+                {
+                    const int DESPLACEX = 25, DESPLACEY = 30;
+                    weapon.Shot(this, player.GetX() - DESPLACEX
+                        , player.GetY() + DESPLACEY);
+                }
+            }
+
         yMouse = Mouse.GetY() + toMoveY;
         xMouse = Mouse.GetX() + toMoveX;
 
@@ -250,23 +302,60 @@ class Game
 
     public void CheckKeys()
     {
+        const byte RIGHT = 0, LEFT = 1;
         if (Hardware.KeyPressed(Hardware.KEY_SPC) ||
             Hardware.KeyPressed(Hardware.KEY_W))
         {
             if (Hardware.KeyPressed(Hardware.KEY_D))
+            {
                 player.JumpRight();
+                if (actualItem != 2)
+                    player.ChangeDirection(RIGHT);
+            }
             else
             if (Hardware.KeyPressed(Hardware.KEY_A))
+            {
                 player.JumpLeft();
+                if (actualItem != 2)
+                    player.ChangeDirection(LEFT);
+            }
             else
                 player.Jump();
         }
-
         else if (Hardware.KeyPressed(Hardware.KEY_D))
+        {
             player.MoveRight();
+            if (actualItem != 2)
+                player.ChangeDirection(RIGHT);
+        }
 
         else if (Hardware.KeyPressed(Hardware.KEY_A))
+        {
             player.MoveLeft();
+            if (actualItem != 2)
+                player.ChangeDirection(LEFT);
+        }
+
+        if (Hardware.KeyPressed(Hardware.KEY_1))
+            actualItem = 1;
+        else if (Hardware.KeyPressed(Hardware.KEY_2))
+            actualItem = 2;
+        else if (Hardware.KeyPressed(Hardware.KEY_3))
+            actualItem = 3;
+        else if (Hardware.KeyPressed(Hardware.KEY_4))
+            actualItem = 4;
+        else if (Hardware.KeyPressed(Hardware.KEY_5))
+            actualItem = 5;
+        else if (Hardware.KeyPressed(Hardware.KEY_6))
+            actualItem = 6;
+        else if (Hardware.KeyPressed(Hardware.KEY_7))
+            actualItem = 7;
+        else if (Hardware.KeyPressed(Hardware.KEY_8))
+            actualItem = 8;
+        else if (Hardware.KeyPressed(Hardware.KEY_9))
+            actualItem = 9;
+        else if (Hardware.KeyPressed(Hardware.KEY_0))
+            actualItem = 0;
 
         if (Hardware.KeyPressed(Hardware.KEY_ESC))
             keyESCPresed = true;
@@ -290,7 +379,7 @@ class Game
         if (vulnerable > 0)
             vulnerable--;
         if (levelActual == 0)
-            for (int i = 0; i < enemies; i++)
+            for (int i = 0; i < enemy.Count; i++)
                 if (enemy[i].CollisionsWith(player))
                     if (vulnerable <= 0)
                     {
@@ -308,6 +397,14 @@ class Game
             {
                 player.AddToInventory(item[i]);
                 item.RemoveAt(i);
+            }
+
+        for (int i = 0; i < enemy.Count; i++)
+            if (weapon.ShotCollisionsWith(enemy[i]))
+            {
+                enemy[i].SetLive(enemy[i].GetLive() - weapon.GetDamage());
+                if (enemy[i].GetLive() <= 0)
+                    enemy.RemoveAt(i);
             }
     }
 }

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 class Player : Sprite
 {
     protected Game myGame;
-    protected List<Item> inventory;
+    protected List<Item>[] inventory;
     protected bool jumping, falling;
-    protected int jumpXspeed;
+    protected int jumpXspeed, positionOfInventory;
     protected int jumpFrame;
     protected int[] jumpSteps =
     {
@@ -26,8 +26,10 @@ class Player : Sprite
             "data/playerRight3.png","data/playerRight4.png"});
 
         ChangeDirection(RIGHT);
-
-        inventory = new List<Item>();
+        const int SIZEINVENTORY = 40;
+        inventory = new List<Item>[SIZEINVENTORY];
+        for (int i = 0; i < inventory.Length; i++)
+            inventory[i] = new List<Item>();
         x = 480;
         startX = x;
         y = 368;
@@ -36,6 +38,7 @@ class Player : Sprite
         ySpeed = 8;
         width = 32;
         height = 63;
+        positionOfInventory = 0;
         jumpXspeed = 0;
         jumping = false;
         jumpFrame = 0;
@@ -58,7 +61,8 @@ class Player : Sprite
             y + height))
         {
             x += xSpeed;
-            ChangeDirection(RIGHT);
+            // Change the position changed from the mouse
+            // ChangeDirection(RIGHT);
             NextFrame();
         }
     }
@@ -69,7 +73,8 @@ class Player : Sprite
             y + height))
         {
             x -= xSpeed;
-            ChangeDirection(LEFT);
+            // Change the position changed from the mouse
+            // ChangeDirection(LEFT);
             NextFrame();
         }
     }
@@ -157,7 +162,18 @@ class Player : Sprite
 
     public void AddToInventory(Item toAdd)
     {
-        inventory.Add(toAdd);
+        bool contains = false;
+        for (int i = 0; i < positionOfInventory && !contains; i++)
+            if (inventory[i].Contains(toAdd))
+            {
+                inventory[i].Add(toAdd);
+                contains = true;
+            }
+        if (!contains && positionOfInventory < 39)
+        {
+            inventory[positionOfInventory].Add(toAdd);
+            positionOfInventory++;
+        }
     }
 
     public void RemoveInventory()
@@ -167,11 +183,11 @@ class Player : Sprite
 
     public bool ContainsItems()
     {
-        return inventory.Count > 0;
+        return inventory.Length > 0;
     }
 
     public Item GetItemAt(int i)
     {
-        return inventory[i];
+        return inventory[i][0];
     }
 }
