@@ -57,28 +57,39 @@ class Player : Sprite
 
     public void MoveRight()
     {
+        const int UPTORAMP = 34;
         if (myGame.IsValidMove(x + xSpeed, y, x + width + xSpeed,
             y + height))
         {
             x += xSpeed;
-            // Change the position changed from the mouse
-            // ChangeDirection(RIGHT);
             NextFrame();
+        }
+        else if (myGame.IsValidMove(x + xSpeed, y - UPTORAMP, x + width +
+            xSpeed, y - UPTORAMP + height))
+        {
+            y -= UPTORAMP;
+            x += xSpeed;
         }
     }
 
     public void MoveLeft()
     {
+        const int UPTORAMP = 40;
         if (myGame.IsValidMove(x - xSpeed, y, x + width - xSpeed,
             y + height))
         {
             x -= xSpeed;
-            // Change the position changed from the mouse
-            // ChangeDirection(LEFT);
             NextFrame();
         }
+        else if (myGame.IsValidMove(x - xSpeed, y - UPTORAMP, x + width -
+           xSpeed, y - UPTORAMP + height))
+        {
+            y -= UPTORAMP;
+            x -= xSpeed;
+        }
     }
-    
+
+
     public void Jump()
     {
         if (jumping || falling)

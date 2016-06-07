@@ -56,6 +56,7 @@
     <Compile Include="Level.cs" />
     <Compile Include="Mouse.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Rain.cs" />
     <Compile Include="Shot.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Starbound.cs" />

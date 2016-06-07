@@ -7,13 +7,15 @@ class Game
     private Player player;
     private List<Item> item;
     private bool finished;
-    private int lives, x, y, vulnerable, sleepHome;
-    private byte levels, levelActual, lastLevel, actualItem, delay;
+    private int lives, x, y, invulnerable, sleepHome;
+    private byte levels, levelActual, lastLevel, actualItem, delay, heal;
     private Level[] currentLevel;
     private List<Enemy> enemy;
-    private Tool playerBar, gameMenu, rightBar, topBar;//<---
-    private bool keyESCPresed; //                            |
-    private Weapon weapon; // TO DO IN TOPBAR!! -------------
+    private Tool playerBar, gameMenu, rightBar, topBar;
+    private Tool[] live;
+    private bool keyESCPresed;
+    private Rain[] rain;
+    private Weapon weapon; // TO DO IN TOPBAR
 
 
     public Game()
@@ -23,6 +25,12 @@ class Game
         gameMenu = new Tool(new Sprite("data/GameMenu.png"));
         rightBar = new Tool(new Sprite("data/RightBar.png"));
         topBar = new Tool(new Sprite("data/topBar.png"));
+        const int SIZE = 15;
+        live = new Tool[SIZE];
+        for (int i = 0; i < SIZE; i++)
+            live[i] = new Tool(new Sprite("data/live.png"));
+        //const int SIZERAIN = 0;
+        //rain = new Rain[SIZERAIN];
         keyESCPresed = false;
         finished = false;
         weapon = new Weapon(15);
@@ -31,6 +39,7 @@ class Game
         levelActual = 0;
         sleepHome = 0;
         delay = 0;
+        heal = 0;
         item = new List<Item>();
         player = new Player(this);
         lives = 100;
@@ -47,7 +56,11 @@ class Game
             int yEnemy = r.Next(300, 400);
             enemy.Add(new Enemy(xEnemy, yEnemy, currentLevel[levelActual]));
         }
-        vulnerable = 0;
+
+        //for (int i = 0; i < SIZERAIN; i++)
+        //    rain[i] = new Rain(r.Next(100, 1500), 100, 0, currentLevel[levelActual]);
+
+        invulnerable = 0;
     }
 
 
@@ -93,7 +106,6 @@ class Game
             }
         }
 
-
         playerBar.DrawOnHiddenScreen();
 
         if (levelActual == 0)
@@ -104,11 +116,17 @@ class Game
             for (int i = 0; i < enemy.Count; i++)
                 enemy[i].DrawOnHiddenScreen();
 
+        //for (int i = 0; i < rain.Length; i++)
+        //    rain[i].DrawOnHiddenScreen();
+
         if (keyESCPresed)
             gameMenu.DrawOnHiddenScreen();
 
         rightBar.DrawOnHiddenScreen();
         topBar.DrawOnHiddenScreen();
+        const int NUMBEROFLIVES = 7;
+        for (int i = 0; i < (lives / NUMBEROFLIVES) + 1; i++)
+            live[i].DrawOnHiddenScreen();
 
         Hardware.ShowHiddenScreen();
 
@@ -121,6 +139,12 @@ class Game
         int toMoveX = player.GetX() - player.GetStartX();
 
         playerBar.SetX(toMoveX);
+
+        // To set the live to the correct pos I need to desplace the initial
+        // space and the size of the live
+        const int DESP1 = 44, DESP2 = 6;
+        for (int i = 0; i < live.Length; i++)
+            live[i].SetX(toMoveX + DESP1 + (DESP2 * i));
 
         const int WIDHT = 300;
         gameMenu.SetX(toMoveX + WIDHT);
@@ -151,7 +175,8 @@ class Game
     public void MoveElements()
     {
         const int HEIGHTI = 545, WIGTHI = 433;
-
+        //for (int i = 0; i < rain.Length; i++)
+        //    rain[i].Move();
         // The x mouse and the Y mouse
         int xMouse = (Mouse.GetX() + (x - HEIGHTI));
         int yMouse = (Mouse.GetY() + (y - WIGTHI));
@@ -195,6 +220,9 @@ class Game
         int toMoveY = player.GetY() - player.GetStartY();
         playerBar.SetY(toMoveY);
 
+        const int DESPLACETOP = 19;
+        for (int i = 0; i < live.Length; i++)
+            live[i].SetY(toMoveY + DESPLACETOP);
         const int HEIGHT = 100;
         gameMenu.SetY(toMoveY + HEIGHT);
 
@@ -239,7 +267,7 @@ class Game
             else
                 delay--;
 
-                yMouse = Mouse.GetY() + toMoveY;
+        yMouse = Mouse.GetY() + toMoveY;
         xMouse = Mouse.GetX() + toMoveX;
 
         // Time to cant use the buttom to go Home
@@ -319,7 +347,6 @@ class Game
                 if (actualItem != 2)
                     player.ChangeDirection(RIGHT);
             }
-            else
             if (Hardware.KeyPressed(Hardware.KEY_A))
             {
                 player.JumpLeft();
@@ -329,14 +356,14 @@ class Game
             else
                 player.Jump();
         }
-        else if (Hardware.KeyPressed(Hardware.KEY_D))
+        if (Hardware.KeyPressed(Hardware.KEY_D))
         {
             player.MoveRight();
             if (actualItem != 2)
                 player.ChangeDirection(RIGHT);
         }
 
-        else if (Hardware.KeyPressed(Hardware.KEY_A))
+        if (Hardware.KeyPressed(Hardware.KEY_A))
         {
             player.MoveLeft();
             if (actualItem != 2)
@@ -383,16 +410,24 @@ class Game
 
     public void CheckCollisions()
     {
-        if (vulnerable > 0)
-            vulnerable--;
+        if (invulnerable > 0)
+            invulnerable -= 5;
         if (levelActual == 0)
             for (int i = 0; i < enemy.Count; i++)
                 if (enemy[i].CollisionsWith(player))
-                    if (vulnerable <= 0)
+                    if (invulnerable <= 0)
                     {
                         lives -= 10;
-                        vulnerable = 50;
+                        invulnerable = 50;
                     }
+        if (heal == 0)
+        {
+            if (lives < 100)
+                lives++;
+            heal = 10;
+        }
+        heal--;
+
         if (lives <= 0)
         {
             finished = true;
