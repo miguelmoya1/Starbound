@@ -3,8 +3,10 @@ class Item : Sprite
 {
     char type;
     Level l;
+    int total;
     public Item(int x, int y, char c, Level level)
     {
+        total = 0;
         this.x = x;
         this.y = y;
         ySpeed = 1;
@@ -18,6 +20,18 @@ class Item : Sprite
                 break;
         }
         l = level;
+    }
+
+    // to see how many items I have
+    public void MoreItems()
+    {
+        total++;
+    }
+
+    public void LessItems()
+    {
+        if (total > 0)
+            total--;
     }
 }
 

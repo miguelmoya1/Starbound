@@ -43,7 +43,15 @@
     {
         this.y = y;
     }
+    public void AddItems()
+    {
+        // TO DO
+    }
 
+    public void LessItems()
+    {
+        // TO DO
+    }
     public Sprite(string[] imageNames)
         : this()
     {
