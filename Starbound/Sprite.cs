@@ -9,6 +9,7 @@
     protected Image[][] sequence;
     protected bool containsSequence;
     protected int currentFrame;
+    protected int total;
 
     protected byte numDirections = 4;
     public byte currentDirection;
@@ -35,11 +36,16 @@
         LoadImage(imageName);
     }
 
-    public void SetX(int x)
+    public int GetTotal()
+    {
+        return total;
+    }
+
+    public virtual void SetX(int x)
     {
         this.x = x;
     }
-    public void SetY(int y)
+    public virtual void SetY(int y)
     {
         this.y = y;
     }
@@ -48,10 +54,22 @@
         // TO DO
     }
 
-    public void LessItems()
+    public virtual void LessItems()
     {
         // TO DO
     }
+
+    public virtual char GetChar()
+    {
+        return ' ';
+        // TO DO
+    }
+
+    public virtual void MoreItems()
+    {
+        // TO DO
+    }
+
     public Sprite(string[] imageNames)
         : this()
     {
@@ -145,7 +163,7 @@
     {
     }
 
-    public void DrawOnHiddenScreen()
+    public virtual void DrawOnHiddenScreen()
     {
         if (!visible)
             return;

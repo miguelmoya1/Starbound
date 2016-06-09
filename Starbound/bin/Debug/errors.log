@@ -1,9 +1,6 @@
-Font not found: data/Joystix.ttf
-Font not found: data/Joystix.ttf
-Font not found: data/Joystix.ttf
-Image not found: data/GameOverScreen.png
-Image not found: data/bg.png
-Image not found: data/EnemyRight1.png
-Image not found: data/floor1.png
-Image not found: data\shield.jpg
-Image not found: data\shed.jpg
+
+Image not found: data/floorInventory.png
+Image not found: floorInventory.png
+Image not found: data\floorInventory.png
+Image not found: data/stoneInventory.png
+Image not found: data/stoneFloor.png

@@ -4,6 +4,7 @@ class Weapon : Sprite
 {
     protected int damage;
     protected List<Shot> shot;
+    protected char type;
 
     public Weapon(int damage)
     {
@@ -13,6 +14,23 @@ class Weapon : Sprite
         LoadSequence(RIGHT,
             new string[] { "data/Weapon1Right.png" });
         shot = new List<Shot>();
+    }
+    public Weapon(char c)
+    {
+        type = c;
+        switch (c)
+        {
+            case 'c':
+                LoadImage("data/weaponInventory.png");
+                break;
+            case 'p':
+                LoadImage("data/Tool.png");
+                break;
+        }
+    }
+    public override char GetChar()
+    {
+        return type;
     }
 
     public void Shot(Game g, int x, int y)

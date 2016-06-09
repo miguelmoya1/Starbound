@@ -4,9 +4,11 @@ using System.Collections.Generic;
 class Game
 {
     private Item items;
+    private List<Text> texts;
     private Font font18;
     private Player player;
     private List<Item> item;
+    private char a;
     private bool finished;
     private int lives, x, y, invulnerable, sleepHome;
     private byte levels, levelActual, lastLevel, actualItem, delay, heal;
@@ -14,13 +16,15 @@ class Game
     private List<Enemy> enemy;
     private Tool playerBar, gameMenu, rightBar, topBar;
     private Tool[] live;
+    private long lavaDamage;
     private bool keyESCPresed;
-    private Rain[] rain;
-    private Weapon weapon, w;
+    // private Rain[] rain;
+    private Weapon weapon, w, peak;
 
 
     public Game()
     {
+        lavaDamage = 1;
         font18 = new Font("data/Joystix.ttf", 18);
         playerBar = new Tool(new Sprite("data/playerBar.png"));
         gameMenu = new Tool(new Sprite("data/GameMenu.png"));
@@ -33,9 +37,13 @@ class Game
         //const int SIZERAIN = 0;
         //rain = new Rain[SIZERAIN];
 
+        texts = new List<Text>();
+
         weapon = new Weapon(15);
-        w = new Weapon(15);
+        w = new Weapon('c');
+        peak = new Weapon('p');
         topBar.AddItem(w);
+        topBar.AddItem(peak);
         keyESCPresed = false;
         finished = false;
         levels = 2;
@@ -112,9 +120,8 @@ class Game
 
         playerBar.DrawOnHiddenScreen();
 
-        //if (levelActual == 0)
-        //    for (int i = 0; i < item.Count; i++)
-        //        item[i].DrawOnHiddenScreen();
+        for (int i = 0; i < item.Count; i++)
+            item[i].DrawOnHiddenScreen();
 
         if (levelActual == 0)
             for (int i = 0; i < enemy.Count; i++)
@@ -134,6 +141,9 @@ class Game
         const int NUMBEROFLIVES = 7;
         for (int i = 0; i < (lives / NUMBEROFLIVES) + 1; i++)
             live[i].DrawOnHiddenScreen();
+
+        for (int i = 0; i < texts.Count; i++)
+            texts[i].DrawText(font18);
 
         Hardware.ShowHiddenScreen();
 
@@ -177,8 +187,8 @@ class Game
         weapon.SetY(player.GetY() + DESPLACEWEAPONY);
 
         const byte TOTALBUTTOMS = 10;
-        const int INITIAL = 19, TOMOVE = 52, SIZE = 36;
-        int right = INITIAL, left = INITIAL + SIZE;
+        const int INITIAL = 19, TOMOVE = 42;
+        int right = INITIAL;
         for (int i = 0; i < TOTALBUTTOMS; i++)
         {
             if (topBar.GetItemAt(i) != null)
@@ -191,12 +201,28 @@ class Game
 
     public void MoveElements()
     {
+        for (int i = 0; i < texts.Count; i++)
+        {
+            if (texts[i].GetDelay() > 0)
+            {
+                texts[i].SetY((short)(texts[i].GetY() - 1));
+                texts[i].SetDelay((byte)(texts[i].GetDelay() - 1));
+            }
+            else
+                texts.RemoveAt(i);
+
+        }
+
         const int HEIGHTI = 545, WIGTHI = 433;
         //for (int i = 0; i < rain.Length; i++)
         //    rain[i].Move();
         // The x mouse and the Y mouse
         int xMouse = (Mouse.GetX() + (x - HEIGHTI));
         int yMouse = (Mouse.GetY() + (y - WIGTHI));
+        if (currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                    (short)(yMouse / 16)) != '.')
+            a = currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16));
 
         if (topBar.GetItemAt(actualItem) == w)
         {
@@ -213,28 +239,58 @@ class Game
             }
         }
 
+        const char FLOOR = '_', STONE = 'w';
         // Break the stone
-        if (topBar.GetItemAt(actualItem) != w)
+
+        if (topBar.GetItemAt(actualItem) == peak)
+        {
             if (player.Break(currentLevel[levelActual], xMouse / 16,
-                yMouse / 16))
+                    yMouse / 16))
             {
                 const int AJUSTINGL = 60, AJUSTINGT = 60;
                 item.Add(new Item(xMouse + AJUSTINGL, yMouse + AJUSTINGT
-                    , '_', currentLevel[levelActual]));
-                if (items == null)
-                {
-                    items = new Item(xMouse + AJUSTINGL, yMouse + AJUSTINGT
-                        , '_', currentLevel[levelActual]);
-                    topBar.AddItem(items);
-                }
-                else
-                {
-                    for (int i = 0; i < 10; i++)
-                        if (topBar.GetItemAt(i) != null)
-                            topBar.AddItems(i);
-                }
+                    , a, currentLevel[levelActual]));
                 player.Break(currentLevel[levelActual], xMouse / 16,
                 yMouse / 16);
+            }
+        }
+        else if (topBar.GetItemAt(actualItem) != null)
+            if (topBar.GetItemAt(actualItem).GetChar() == FLOOR &&
+                topBar.GetItemAt(actualItem).GetTotal() > 0)
+            {
+                if (Mouse.Clic() == 1 &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != '_' &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != 'w' &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != 'x' &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != 'L')
+                {
+                    currentLevel[levelActual].SetPosition((short)(xMouse / 16),
+                    (short)(yMouse / 16), FLOOR);
+                    topBar.GetItemAt(actualItem).LessItems();
+                }
+            }
+            else if (topBar.GetItemAt(actualItem).GetChar() == STONE &&
+                topBar.GetItemAt(actualItem).GetTotal() > 0)
+            {
+                if (Mouse.Clic() == 1 &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != '_' &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != 'w' &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != 'x' &&
+                        currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
+                        (short)(yMouse / 16)) != 'L')
+                {
+                    currentLevel[levelActual].SetPosition((short)(xMouse / 16),
+                    (short)(yMouse / 16), STONE);
+                    topBar.GetItemAt(actualItem).LessItems();
+                }
+
             }
 
         player.Move();
@@ -255,7 +311,8 @@ class Game
         const int HEIGHT = 100;
         gameMenu.SetY(toMoveY + HEIGHT);
 
-        topBar.SetY(toMoveY);
+        const sbyte PIXELAJUSTING = -2;
+        topBar.SetY(toMoveY + PIXELAJUSTING);
 
         rightBar.SetY(toMoveY);
 
@@ -302,7 +359,7 @@ class Game
         for (int i = 0; i < TOTALBUTTOMS; i++)
         {
             if (topBar.GetItemAt(i) != null)
-                topBar.SetImageY(TOP + 10 + toMoveY, i);
+                topBar.SetImageY(TOP + toMoveY, i);
 
             // Check the key
             if (Mouse.Clic() == 1 &&
@@ -458,14 +515,17 @@ class Game
     public void CheckCollisions()
     {
         if (invulnerable > 0)
-            invulnerable -= 5;
+            invulnerable--;
         if (levelActual == 0)
             for (int i = 0; i < enemy.Count; i++)
                 if (enemy[i].CollisionsWith(player))
                     if (invulnerable <= 0)
                     {
-                        lives -= 10;
-                        invulnerable = 50;
+                        texts.Add(new Text((short)player.GetX(), (short)
+                            player.GetY(), 255, 0, 0, 30,
+                            Convert.ToString(enemy[i].GetDamage())));
+                        lives -= enemy[i].GetDamage();
+                        invulnerable = 25;
                     }
         if (heal == 0)
         {
@@ -484,6 +544,23 @@ class Game
         for (int i = 0; i < item.Count; i++)
             if (player.CollisionsWith(item[i]))
             {
+                if (!topBar.ContainsChar(a))
+                {
+                    topBar.AddItem(new Item(
+                        item[i].GetChar()));
+                    int j;
+                    for (j = 0; j < topBar.TotalItems(); j++)
+                        if (topBar.GetItemAt(j).GetChar() ==
+                            item[i].GetChar())
+                            topBar.GetItemAt(j).MoreItems();
+                }
+                else
+                {
+                    for (int j = 0; j < topBar.TotalItems(); j++)
+                        if (topBar.GetItemAt(j).GetChar() ==
+                                item[i].GetChar())
+                            topBar.AddItems(j);
+                }
                 player.AddToInventory(item[i]);
                 item.RemoveAt(i);
             }
@@ -491,9 +568,27 @@ class Game
         for (int i = 0; i < enemy.Count; i++)
             if (weapon.ShotCollisionsWith(enemy[i]))
             {
+                texts.Add(new Text((short)enemy[i].GetX(), (short)
+                    enemy[i].GetY(), 255, 0, 0, 20,
+                    Convert.ToString(weapon.GetDamage())));
                 enemy[i].SetLive(enemy[i].GetLive() - weapon.GetDamage());
                 if (enemy[i].GetLive() <= 0)
                     enemy.RemoveAt(i);
             }
+
+        if (invulnerable <= 0)
+            if (!currentLevel[levelActual].IsLava(player.GetX(), player.GetY(),
+                player.GetX() + player.GetWidth(), player.GetY() +
+                player.GetHeight()))
+            {
+                texts.Add(new Text((short)player.GetX(), (short)
+                            player.GetY(), 255, 0, 0, 30,
+                            Convert.ToString(lavaDamage)));
+                lives -= (int) lavaDamage;
+                invulnerable = 25;
+                lavaDamage *= 2;
+            }
+            else
+                lavaDamage = 1;
     }
 }

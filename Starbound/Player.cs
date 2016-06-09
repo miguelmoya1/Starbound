@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 class Player : Sprite
 {
@@ -57,7 +56,7 @@ class Player : Sprite
 
     public void MoveRight()
     {
-        const int UPTORAMP = 34;
+        const int UPTORAMP = 32;
         if (myGame.IsValidMove(x + xSpeed, y, x + width + xSpeed,
             y + height))
         {
@@ -74,7 +73,7 @@ class Player : Sprite
 
     public void MoveLeft()
     {
-        const int UPTORAMP = 40;
+        const int UPTORAMP = 32;
         if (myGame.IsValidMove(x - xSpeed, y, x + width - xSpeed,
             y + height))
         {
@@ -115,6 +114,7 @@ class Player : Sprite
 
     public override void Move()
     {
+
         // If the player is not jumping, it might need to fall down
         if (!jumping)
         {
@@ -161,7 +161,8 @@ class Player : Sprite
     /// <param name="CurrentLevel"></param>
     public bool Break(Level CurrentLevel, int x, int y)
     {
-        if (CurrentLevel.GetPosicion((short)x, (short)y) == '_'
+        if ((CurrentLevel.GetPosicion((short)x, (short)y) == '_' ||
+            CurrentLevel.GetPosicion((short)x, (short)y) == 'w')
             && Mouse.Clic() == 1)
         {
             CurrentLevel.DeletePosition((short)x, (short)y);

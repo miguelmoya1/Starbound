@@ -10,11 +10,21 @@ class Tool
     {
         actual = 0;
         image = sprite;
-        const int SIZEINVENTORY = 40;
         item = new List<Sprite>();
     }
 
+    public int TotalItems()
+    {
+        return item.Count;
+    }
 
+    public bool ContainsChar(char c)
+    {
+        for (int i = 0; i < item.Count; i++)
+            if (item[i].GetChar() == c)
+                return true;
+        return false;
+    }
     public void AddItem(Sprite item)
     {
         this.item.Add(item);
@@ -65,11 +75,26 @@ class Tool
     public void DrawItem(int i)
     {
         item[i].DrawOnHiddenScreen();
-    }
+        for (int j = 0; j < item.Count; j++)
+        {
+            if (item[j].GetTotal() == 0 &&
+                        item[j].GetChar() != 'c' &&
+                        item[j].GetChar() != 'p')
+                item.RemoveAt(j);
+        }
+        System.Console.WriteLine();
 
+        for (int j = 1; j < item.Count; j++)
+            for (int k = j + 1; k < item.Count; k++)
+                if (item[j].GetChar() == item[k].GetChar())
+                    item.RemoveAt(k);
+
+
+    }
+    
     public void AddItems(int i)
     {
-        item[i].AddItems();
+        item[i].MoreItems();
     }
 
     public void LessItems(int i)

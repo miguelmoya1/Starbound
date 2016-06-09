@@ -3,6 +3,7 @@ class Enemy : Sprite
 {
     Level currentLevel;
     int live;
+    int damage;
 
     public Enemy(int newX, int newY, Level g)
     {
@@ -13,6 +14,7 @@ class Enemy : Sprite
         this.x = newX;
         this.y = newY;
         xSpeed = 6;
+        damage = 15;
         ySpeed = 1;
         width = 64;
         height = 64;
@@ -20,6 +22,11 @@ class Enemy : Sprite
         currentLevel = g;
         ChangeDirection(RIGHT);
 
+    }
+
+    public int GetDamage()
+    {
+        return damage;
     }
 
     public void Move(Player p)

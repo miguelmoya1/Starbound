@@ -45,6 +45,9 @@ public class Hardware
                 isThereJoystick = false;
         }
 
+        if (SdlMixer.Mix_OpenAudio(22050,
+            unchecked(Sdl.AUDIO_S16LSB), 2, 1024) == -1)
+            FatalError("No se ha podido inicializar el Sonido");
     }
 
     public static void ClearScreen()

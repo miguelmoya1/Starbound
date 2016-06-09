@@ -58,9 +58,11 @@
     <Compile Include="Player.cs" />
     <Compile Include="Rain.cs" />
     <Compile Include="Shot.cs" />
+    <Compile Include="Sound.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Starbound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text.cs" />
     <Compile Include="Tool.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="WelcomeScreen.cs" />
