@@ -1,12 +1,10 @@
 ﻿
-class Enemy : Sprite
-{
+class Enemy : Sprite {
     Level currentLevel;
     int live;
     int damage;
 
-    public Enemy(int newX, int newY, Level g)
-    {
+    public Enemy(int newX, int newY, Level g) {
         LoadSequence(RIGHT, new string[] { "data/EnemyRight1.png",
             "data/EnemyRight2.png", "data/EnemyRight3.png" });
         LoadSequence(LEFT, new string[] { "data/EnemyLeft1.png",
@@ -24,48 +22,33 @@ class Enemy : Sprite
 
     }
 
-    public int GetDamage()
-    {
+    public int GetDamage() {
         return damage;
     }
 
-    public void Move(Player p)
-    {
+    public void Move(Player p) {
         if (currentLevel.IsValidMove(
-            x, y + ySpeed, x + width, y + height + ySpeed))
-        {
+            x, y + ySpeed, x + width, y + height + ySpeed)) {
             y += ySpeed;
-        }
-        else if (p.GetX() - x > -350 && p.GetX() - x < 0)
-        {
+        } else if (p.GetX() - x > -350 && p.GetX() - x < 0) {
             if (currentLevel.IsValidMove(x + xSpeed, y, x + width + xSpeed,
-                    y + height))
-            {
+                    y + height)) {
                 if (xSpeed > 0)
                     xSpeed = -xSpeed;
-            }
-            else
+            } else
                 xSpeed = -xSpeed;
-        }
-        else if (p.GetX() - x < 350 && p.GetX() - x > 0)
-        {
+        } else if (p.GetX() - x < 350 && p.GetX() - x > 0) {
             if (currentLevel.IsValidMove(x - xSpeed, y, x + width - xSpeed,
-                    y + height))
-            {
+                    y + height)) {
                 if (xSpeed < 0)
                     xSpeed = -xSpeed;
-            }
-            else
+            } else
                 xSpeed = -xSpeed;
-        }
-        else if (!currentLevel.IsValidMove(x - xSpeed, y, x + width - xSpeed,
-                    y + height))
-        {
+        } else if (!currentLevel.IsValidMove(x - xSpeed, y, x + width - xSpeed,
+                      y + height)) {
             xSpeed = -xSpeed;
-        }
-        else if (!currentLevel.IsValidMove(x + xSpeed, y, x + width + xSpeed,
-                y + height))
-        {
+        } else if (!currentLevel.IsValidMove(x + xSpeed, y, x + width + xSpeed,
+                  y + height)) {
             xSpeed = -xSpeed;
         }
         x += xSpeed;
@@ -77,13 +60,11 @@ class Enemy : Sprite
         NextFrame();
     }
 
-    public void SetLive(int live)
-    {
+    public void SetLive(int live) {
         this.live = live;
     }
 
-    public int GetLive()
-    {
+    public int GetLive() {
         return live;
     }
 }

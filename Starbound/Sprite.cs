@@ -1,5 +1,4 @@
-﻿class Sprite
-{
+﻿class Sprite {
     protected int x, y;
     protected int startX, startY;
     protected int width, height;
@@ -19,8 +18,7 @@
     public const byte UP = 3;
 
 
-    public Sprite()
-    {
+    public Sprite() {
         startX = 480;
         startY = 568;
         width = 16;
@@ -31,59 +29,48 @@
     }
 
     public Sprite(string imageName)
-        : this()
-    {
+        : this() {
         LoadImage(imageName);
     }
 
-    public int GetTotal()
-    {
+    public int GetTotal() {
         return total;
     }
 
-    public virtual void SetX(int x)
-    {
+    public virtual void SetX(int x) {
         this.x = x;
     }
-    public virtual void SetY(int y)
-    {
+    public virtual void SetY(int y) {
         this.y = y;
     }
-    public void AddItems()
-    {
+    public void AddItems() {
         // TO DO
     }
 
-    public virtual void LessItems()
-    {
+    public virtual void LessItems() {
         // TO DO
     }
 
-    public virtual char GetChar()
-    {
+    public virtual char GetChar() {
         return ' ';
         // TO DO
     }
 
-    public virtual void MoreItems()
-    {
+    public virtual void MoreItems() {
         // TO DO
     }
 
     public Sprite(string[] imageNames)
-        : this()
-    {
+        : this() {
         LoadSequence(imageNames);
     }
 
-    public void LoadImage(string name)
-    {
+    public void LoadImage(string name) {
         image = new Image(name);
         containsSequence = false;
     }
 
-    public void LoadSequence(byte direction, string[] names)
-    {
+    public void LoadSequence(byte direction, string[] names) {
         int amountOfFrames = names.Length;
         sequence[direction] = new Image[amountOfFrames];
         for (int i = 0; i < amountOfFrames; i++)
@@ -92,79 +79,64 @@
         currentFrame = 0;
     }
 
-    public void LoadSequence(string[] names)
-    {
+    public void LoadSequence(string[] names) {
         LoadSequence(RIGHT, names);
     }
 
-    public int GetX()
-    {
+    public int GetX() {
         return x;
     }
 
-    public int GetY()
-    {
+    public int GetY() {
         return y;
     }
 
-    public int GetWidth()
-    {
+    public int GetWidth() {
         return width;
     }
 
-    public int GetHeight()
-    {
+    public int GetHeight() {
         return height;
     }
 
-    public int GetSpeedX()
-    {
+    public int GetSpeedX() {
         return xSpeed;
     }
 
-    public int GetSpeedY()
-    {
+    public int GetSpeedY() {
         return ySpeed;
     }
 
-    public bool IsVisible()
-    {
+    public bool IsVisible() {
         return visible;
     }
 
-    public void MoveTo(int newX, int newY)
-    {
+    public void MoveTo(int newX, int newY) {
         x = newX;
         y = newY;
-        if (startX == -1)
-        {
+        if (startX == -1) {
             startX = x;
             startY = y;
         }
     }
 
-    public void SetSpeed(int newXSpeed, int newYSpeed)
-    {
+    public void SetSpeed(int newXSpeed, int newYSpeed) {
         xSpeed = newXSpeed;
         ySpeed = newYSpeed;
     }
 
-    public void Show()
-    {
+    public void Show() {
         visible = true;
     }
 
-    public void Hide()
-    {
+    public void Hide() {
         visible = false;
     }
 
-    public virtual void Move()
-    {
+    public virtual void Move() {
     }
 
-    public virtual void DrawOnHiddenScreen()
-    {
+    public virtual void DrawOnHiddenScreen() {
         if (!visible)
             return;
 
@@ -175,26 +147,22 @@
             Hardware.DrawHiddenImage(image, x, y);
     }
 
-    public void NextFrame()
-    {
+    public void NextFrame() {
         currentFrame++;
         if (currentFrame >= sequence[currentDirection].Length)
             currentFrame = 0;
     }
 
-    public void ChangeDirection(byte newDirection)
-    {
+    public void ChangeDirection(byte newDirection) {
         if (!containsSequence) return;
-        if (currentDirection != newDirection)
-        {
+        if (currentDirection != newDirection) {
             currentDirection = newDirection;
             currentFrame = 0;
         }
 
     }
 
-    public bool CollisionsWith(Sprite otherSprite)
-    {
+    public bool CollisionsWith(Sprite otherSprite) {
         return (visible && otherSprite.IsVisible() &&
             CollisionsWith(otherSprite.GetX(),
                 otherSprite.GetY(),
@@ -202,35 +170,25 @@
                 otherSprite.GetY() + otherSprite.GetHeight()));
     }
 
-    public bool CollisionsWith(int xStart, int yStart, int xEnd, int yEnd)
-    {
-        if (visible &&
+    public bool CollisionsWith(int xStart, int yStart, int xEnd, int yEnd) {
+        return (visible &&
                 (x < xEnd) &&
                 (x + width > xStart) &&
                 (y < yEnd) &&
-                (y + height > yStart)
-                )
-            return true;
-        return false;
+                (y + height > yStart));
     }
 
-    public void Restart()
-    {
+    public void Restart() {
         x = startX;
         y = startY;
     }
 
     public static bool CheckCollisions(
         int r1xStart, int r1yStart, int r1xEnd, int r1yEnd,
-        int r2xStart, int r2yStart, int r2xEnd, int r2yEnd)
-    {
-        if ((r2xStart < r1xEnd) &&
+        int r2xStart, int r2yStart, int r2xEnd, int r2yEnd) {
+        return ((r2xStart < r1xEnd) &&
                 (r2xEnd > r1xStart) &&
                 (r2yStart < r1yEnd) &&
-                (r2yEnd > r1yStart)
-                )
-            return true;
-        else
-            return false;
+                (r2yEnd > r1yStart));
     }
 }

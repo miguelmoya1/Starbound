@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 
-class Weapon : Sprite
-{
+class Weapon : Sprite {
     protected int damage;
     protected List<Shot> shot;
     protected char type;
 
-    public Weapon(int damage)
-    {
+    public Weapon(int damage) {
         this.damage = damage;
         LoadSequence(LEFT,
             new string[] { "data/Weapon1Left.png" });
@@ -15,11 +13,9 @@ class Weapon : Sprite
             new string[] { "data/Weapon1Right.png" });
         shot = new List<Shot>();
     }
-    public Weapon(char c)
-    {
+    public Weapon(char c) {
         type = c;
-        switch (c)
-        {
+        switch (c) {
             case 'c':
                 LoadImage("data/weaponInventory.png");
                 break;
@@ -28,48 +24,40 @@ class Weapon : Sprite
                 break;
         }
     }
-    public override char GetChar()
-    {
+    public override char GetChar() {
         return type;
     }
 
-    public void Shot(Game g, int x, int y)
-    {
+    public void Shot(Game g, int x, int y) {
         int xSpeed = 5;
         shot.Add(new Shot(g, x, y, xSpeed, this, currentDirection));
     }
 
-    public void DrawShot()
-    {
+    public void DrawShot() {
         for (int i = 0; i < shot.Count; i++)
             shot[i].DrawOnHiddenScreen();
     }
 
 
-    public void MoveShot(int x)
-    {
+    public void MoveShot(int x) {
         for (int i = 0; i < shot.Count; i++)
             shot[i].Move(x);
     }
 
-    public void DeleteShot(Shot s)
-    {
+    public void DeleteShot(Shot s) {
         shot.Remove(s);
     }
 
-    public bool ShotCollisionsWith(Sprite s)
-    {
+    public bool ShotCollisionsWith(Sprite s) {
         for (int i = 0; i < shot.Count; i++)
-            if (shot[i].CollisionsWith(s))
-            {
+            if (shot[i].CollisionsWith(s)) {
                 DeleteShot(shot[i]);
                 return true;
             }
         return false;
     }
 
-    public int GetDamage()
-    {
+    public int GetDamage() {
         return damage;
     }
 }

@@ -1,10 +1,8 @@
-﻿class WelcomeScreen
-{
+﻿class WelcomeScreen {
     public enum options { Play, Quit };
     private options optionChosen;
 
-    public void Run()
-    {
+    public void Run() {
         optionChosen = options.Play;
         Image ws = new Image("data/WelcomeScreen.png");
         Image bg = new Image("data/bg.jpg");
@@ -15,8 +13,7 @@
 
         bool validOptionChosen = false;
 
-        do
-        {
+        do {
             Hardware.ClearScreen();
             Hardware.DrawHiddenImage(bg, 0, 0);
             Hardware.DrawHiddenImage(ws, 130, 50);
@@ -31,16 +28,14 @@
                     0xCC, 0xCC, 0xCC,
                     font18);
             Hardware.ShowHiddenScreen();
-           
 
-            if (Mouse.ColisionWith(0, 450, 334, 495, true))
-            {
+
+            if (Mouse.ColisionWith(0, 450, 334, 495, true)) {
                 validOptionChosen = true;
                 optionChosen = options.Play;
             }
             if (Mouse.ColisionWith(0, 500, 187, 543, true) ||
-                Hardware.KeyPressed(Hardware.KEY_Q))
-            {
+                Hardware.KeyPressed(Hardware.KEY_Q)) {
                 validOptionChosen = true;
                 optionChosen = options.Quit;
             }
@@ -49,8 +44,7 @@
         }
         while (!validOptionChosen);
     }
-    public options GetOptionChosen()
-    {
+    public options GetOptionChosen() {
         return optionChosen;
     }
 }

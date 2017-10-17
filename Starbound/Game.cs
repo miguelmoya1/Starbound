@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class Game
-{
+class Game {
     private Item items;
     private List<Text> texts;
     private Font font18;
@@ -22,8 +21,7 @@ class Game
     private Weapon weapon, w, peak;
 
 
-    public Game()
-    {
+    public Game() {
         lavaDamage = 1;
         font18 = new Font("data/Joystix.ttf", 18);
         playerBar = new Tool(new Sprite("data/playerBar.png"));
@@ -62,8 +60,7 @@ class Game
             currentLevel[i] = new Level(player, i);
         Random r = new Random();
         enemy = new List<Enemy>();
-        for (int i = 0; i < 6; i++)
-        {
+        for (int i = 0; i < 6; i++) {
             int xEnemy = r.Next(600, 2500);
             int yEnemy = r.Next(300, 400);
             enemy.Add(new Enemy(xEnemy, yEnemy, currentLevel[levelActual]));
@@ -76,10 +73,8 @@ class Game
     }
 
 
-    public void Run()
-    {
-        while (!finished)
-        {
+    public void Run() {
+        while (!finished) {
             CheckCollisions();
             MoveElementsHorizontaly();
             DrawElements();
@@ -90,8 +85,7 @@ class Game
         }
     }
 
-    public void DrawElements()
-    {
+    public void DrawElements() {
         Hardware.ClearScreen();
 
         if (levelActual == 0)
@@ -100,18 +94,15 @@ class Game
             Hardware.DrawHiddenImage(currentLevel[levelActual].GetBackGround(), 0, 0);
 
         player.DrawOnHiddenScreen();
-        if (topBar.GetItemAt(actualItem) == w)
-        {
+        if (topBar.GetItemAt(actualItem) == w) {
             weapon.DrawOnHiddenScreen();
         }
         weapon.DrawShot();
         currentLevel[levelActual].DrawOnHiddenScreen();
 
-        if (lastLevel != levelActual)
-        {
+        if (lastLevel != levelActual) {
             player.Restart();
-            if (levelActual == 1)
-            {
+            if (levelActual == 1) {
                 // To move to player to correct position
                 const int UP = -97;
                 player.SetY(player.GetY() + UP);
@@ -151,8 +142,7 @@ class Game
 
     }
 
-    public void MoveElementsHorizontaly()
-    {
+    public void MoveElementsHorizontaly() {
         int toMoveX = player.GetX() - player.GetStartX();
 
         playerBar.SetX(toMoveX);
@@ -173,13 +163,10 @@ class Game
         rightBar.SetX(toMoveX + WIDHTRIGHTBAR);
 
         int xMouse = Mouse.GetX() + toMoveX;
-        if (xMouse < player.GetX())
-        {
+        if (xMouse < player.GetX()) {
             const int DESPLACEWEAPONX = 22;
             weapon.SetX(player.GetX() - DESPLACEWEAPONX);
-        }
-        else
-        {
+        } else {
             const int DESPLACEWEAPONX = 22;
             weapon.SetX(player.GetX() + DESPLACEWEAPONX);
         }
@@ -189,8 +176,7 @@ class Game
         const byte TOTALBUTTOMS = 10;
         const int INITIAL = 19, TOMOVE = 42;
         int right = INITIAL;
-        for (int i = 0; i < TOTALBUTTOMS; i++)
-        {
+        for (int i = 0; i < TOTALBUTTOMS; i++) {
             if (topBar.GetItemAt(i) != null)
                 topBar.SetImageX(right + WIDHTTOP + toMoveX, i);
             right += TOMOVE;
@@ -199,16 +185,12 @@ class Game
 
 
 
-    public void MoveElements()
-    {
-        for (int i = 0; i < texts.Count; i++)
-        {
-            if (texts[i].GetDelay() > 0)
-            {
+    public void MoveElements() {
+        for (int i = 0; i < texts.Count; i++) {
+            if (texts[i].GetDelay() > 0) {
                 texts[i].SetY((short)(texts[i].GetY() - 1));
                 texts[i].SetDelay((byte)(texts[i].GetDelay() - 1));
-            }
-            else
+            } else
                 texts.RemoveAt(i);
 
         }
@@ -224,16 +206,12 @@ class Game
             a = currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
                         (short)(yMouse / 16));
 
-        if (topBar.GetItemAt(actualItem) == w)
-        {
+        if (topBar.GetItemAt(actualItem) == w) {
             const byte RIGHT = 0, LEFT = 1;
-            if (xMouse < player.GetX())
-            {
+            if (xMouse < player.GetX()) {
                 weapon.ChangeDirection(LEFT);
                 player.ChangeDirection(LEFT);
-            }
-            else
-            {
+            } else {
                 weapon.ChangeDirection(RIGHT);
                 player.ChangeDirection(RIGHT);
             }
@@ -242,22 +220,18 @@ class Game
         const char FLOOR = '_', STONE = 'w';
         // Break the stone
 
-        if (topBar.GetItemAt(actualItem) == peak)
-        {
+        if (topBar.GetItemAt(actualItem) == peak) {
             if (player.Break(currentLevel[levelActual], xMouse / 16,
-                    yMouse / 16))
-            {
+                    yMouse / 16)) {
                 const int AJUSTINGL = 60, AJUSTINGT = 60;
                 item.Add(new Item(xMouse + AJUSTINGL, yMouse + AJUSTINGT
                     , a, currentLevel[levelActual]));
                 player.Break(currentLevel[levelActual], xMouse / 16,
                 yMouse / 16);
             }
-        }
-        else if (topBar.GetItemAt(actualItem) != null)
+        } else if (topBar.GetItemAt(actualItem) != null)
             if (topBar.GetItemAt(actualItem).GetChar() == FLOOR &&
-                topBar.GetItemAt(actualItem).GetTotal() > 0)
-            {
+                topBar.GetItemAt(actualItem).GetTotal() > 0) {
                 if (Mouse.Clic() == 1 &&
                         currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
                         (short)(yMouse / 16)) != '_' &&
@@ -266,16 +240,13 @@ class Game
                         currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
                         (short)(yMouse / 16)) != 'x' &&
                         currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
-                        (short)(yMouse / 16)) != 'L')
-                {
+                        (short)(yMouse / 16)) != 'L') {
                     currentLevel[levelActual].SetPosition((short)(xMouse / 16),
                     (short)(yMouse / 16), FLOOR);
                     topBar.GetItemAt(actualItem).LessItems();
                 }
-            }
-            else if (topBar.GetItemAt(actualItem).GetChar() == STONE &&
-                topBar.GetItemAt(actualItem).GetTotal() > 0)
-            {
+            } else if (topBar.GetItemAt(actualItem).GetChar() == STONE &&
+                  topBar.GetItemAt(actualItem).GetTotal() > 0) {
                 if (Mouse.Clic() == 1 &&
                         currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
                         (short)(yMouse / 16)) != '_' &&
@@ -284,8 +255,7 @@ class Game
                         currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
                         (short)(yMouse / 16)) != 'x' &&
                         currentLevel[levelActual].GetPosicion((short)(xMouse / 16),
-                        (short)(yMouse / 16)) != 'L')
-                {
+                        (short)(yMouse / 16)) != 'L') {
                     currentLevel[levelActual].SetPosition((short)(xMouse / 16),
                     (short)(yMouse / 16), STONE);
                     topBar.GetItemAt(actualItem).LessItems();
@@ -326,26 +296,20 @@ class Game
 
         // 1 is Left clic
         if (topBar.GetItemAt(actualItem) == w)
-            if (delay <= 0)
-            {
-                if (Mouse.Clic() == 1)
-                {
+            if (delay <= 0) {
+                if (Mouse.Clic() == 1) {
                     delay = 5;
-                    if (weapon.currentDirection == 0)
-                    {
+                    if (weapon.currentDirection == 0) {
                         const int DESPLACEX = 50, DESPLACEY = 30;
                         weapon.Shot(this, player.GetX() + DESPLACEX
                             , player.GetY() + DESPLACEY);
-                    }
-                    else
-                    {
+                    } else {
                         const int DESPLACEX = 25, DESPLACEY = 30;
                         weapon.Shot(this, player.GetX() - DESPLACEX
                             , player.GetY() + DESPLACEY);
                     }
                 }
-            }
-            else
+            } else
                 delay--;
 
         yMouse = Mouse.GetY() + toMoveY;
@@ -356,8 +320,7 @@ class Game
         const int TOP = 7, TOP2 = 45, INITIAL = 19,
             TOMOVE = 52, SIZE = 36;
         int right = INITIAL, left = INITIAL + SIZE;
-        for (int i = 0; i < TOTALBUTTOMS; i++)
-        {
+        for (int i = 0; i < TOTALBUTTOMS; i++) {
             if (topBar.GetItemAt(i) != null)
                 topBar.SetImageY(TOP + toMoveY, i);
 
@@ -366,8 +329,7 @@ class Game
                     (xMouse >= right + toMoveX + WIDHT &&
                     xMouse <= left + toMoveX + WIDHT) &&
                     (yMouse >= TOP + toMoveY + HEIGHT &&
-                    yMouse <= TOP2 + toMoveY + HEIGHT))
-            {
+                    yMouse <= TOP2 + toMoveY + HEIGHT)) {
                 actualItem = (byte)i;
             }
             right += TOMOVE;
@@ -382,10 +344,8 @@ class Game
                 (xMouse >= toMoveX + WIDHTRIGHTBAR &&
                 xMouse <= MARGINRIGHT + toMoveX + WIDHTRIGHTBAR) &&
                 (yMouse >= MARGINTOP1 + toMoveY &&
-                yMouse <= MARGINTOP2 + toMoveY))
-        {
-            if (sleepHome <= 0)
-            {
+                yMouse <= MARGINTOP2 + toMoveY)) {
+            if (sleepHome <= 0) {
                 if (levelActual == 0)
                     levelActual = 1;
                 else
@@ -395,8 +355,7 @@ class Game
             }
         }
 
-        if (keyESCPresed)
-        {
+        if (keyESCPresed) {
             const int RIGHT = 17, LEFT = 400;
             // 72, 140, 147... is the height of the Menu when you clic esc.
             // TO DO const
@@ -404,24 +363,21 @@ class Game
                     (xMouse >= RIGHT + toMoveX + WIDHT &&
                     xMouse <= LEFT + toMoveX + WIDHT) &&
                     (yMouse >= 72 + toMoveY + HEIGHT &&
-                    yMouse <= 140 + toMoveY + HEIGHT))
-            {
+                    yMouse <= 140 + toMoveY + HEIGHT)) {
                 keyESCPresed = false;
             }
             if (Mouse.Clic() == 1 &&
                     (xMouse >= RIGHT + toMoveX + WIDHT &&
                     xMouse <= LEFT + toMoveX + WIDHT) &&
                     (yMouse >= 147 + toMoveY + HEIGHT &&
-                    yMouse <= 219 + toMoveY + HEIGHT))
-            {
+                    yMouse <= 219 + toMoveY + HEIGHT)) {
                 // TO DO
             }
             if (Mouse.Clic() == 1 &&
                     (xMouse >= RIGHT + toMoveX + WIDHT &&
                     xMouse <= LEFT + toMoveX + WIDHT) &&
                     (yMouse >= 226 + toMoveY + HEIGHT &&
-                    yMouse <= 299 + toMoveY + HEIGHT))
-            {
+                    yMouse <= 299 + toMoveY + HEIGHT)) {
                 finished = true;
                 Hardware.ResetScroll();
             }
@@ -429,8 +385,7 @@ class Game
     }
 
 
-    public void MoveScroll()
-    {
+    public void MoveScroll() {
         int moved = player.GetX() - x;
         Hardware.ScrollHorizontally((short)-moved);
         x = player.GetX();
@@ -439,36 +394,29 @@ class Game
         y = player.GetY();
     }
 
-    public void CheckKeys()
-    {
+    public void CheckKeys() {
         const byte RIGHT = 0, LEFT = 1;
         if (Hardware.KeyPressed(Hardware.KEY_SPC) ||
-            Hardware.KeyPressed(Hardware.KEY_W))
-        {
-            if (Hardware.KeyPressed(Hardware.KEY_D))
-            {
+            Hardware.KeyPressed(Hardware.KEY_W)) {
+            if (Hardware.KeyPressed(Hardware.KEY_D)) {
                 player.JumpRight();
                 if (topBar.GetItemAt(actualItem) != w)
                     player.ChangeDirection(RIGHT);
             }
-            if (Hardware.KeyPressed(Hardware.KEY_A))
-            {
+            if (Hardware.KeyPressed(Hardware.KEY_A)) {
                 player.JumpLeft();
                 if (topBar.GetItemAt(actualItem) != w)
                     player.ChangeDirection(LEFT);
-            }
-            else
+            } else
                 player.Jump();
         }
-        if (Hardware.KeyPressed(Hardware.KEY_D))
-        {
+        if (Hardware.KeyPressed(Hardware.KEY_D)) {
             player.MoveRight();
             if (topBar.GetItemAt(actualItem) != w)
                 player.ChangeDirection(RIGHT);
         }
 
-        if (Hardware.KeyPressed(Hardware.KEY_A))
-        {
+        if (Hardware.KeyPressed(Hardware.KEY_A)) {
             player.MoveLeft();
             if (topBar.GetItemAt(actualItem) != w)
                 player.ChangeDirection(LEFT);
@@ -499,53 +447,45 @@ class Game
             keyESCPresed = true;
     }
 
-    public bool IsValidMove(int xMin, int yMin, int xMax, int yMax)
-    {
+    public bool IsValidMove(int xMin, int yMin, int xMax, int yMax) {
         return currentLevel[levelActual].IsValidMove(xMin, yMin, xMax, yMax);
     }
 
 
-    public void PauseTillNextFrame()
-    {
+    public void PauseTillNextFrame() {
         // Pause till next frame (20 ms = 50 fps)
         Hardware.Pause(20);
     }
 
 
-    public void CheckCollisions()
-    {
+    public void CheckCollisions() {
         if (invulnerable > 0)
             invulnerable--;
         if (levelActual == 0)
             for (int i = 0; i < enemy.Count; i++)
                 if (enemy[i].CollisionsWith(player))
-                    if (invulnerable <= 0)
-                    {
+                    if (invulnerable <= 0) {
                         texts.Add(new Text((short)player.GetX(), (short)
                             player.GetY(), 255, 0, 0, 30,
                             Convert.ToString(enemy[i].GetDamage())));
                         lives -= enemy[i].GetDamage();
                         invulnerable = 25;
                     }
-        if (heal == 0)
-        {
+        if (heal == 0) {
             if (lives < 100)
                 lives++;
             heal = 10;
         }
         heal--;
 
-        if (lives <= 0)
-        {
+        if (lives <= 0) {
             finished = true;
             Hardware.ResetScroll();
         }
 
         for (int i = 0; i < item.Count; i++)
-            if (player.CollisionsWith(item[i]))
-            {
-                if (!topBar.ContainsChar(a))
-                {
+            if (player.CollisionsWith(item[i])) {
+                if (!topBar.ContainsChar(a)) {
                     topBar.AddItem(new Item(
                         item[i].GetChar()));
                     int j;
@@ -553,9 +493,7 @@ class Game
                         if (topBar.GetItemAt(j).GetChar() ==
                             item[i].GetChar())
                             topBar.GetItemAt(j).MoreItems();
-                }
-                else
-                {
+                } else {
                     for (int j = 0; j < topBar.TotalItems(); j++)
                         if (topBar.GetItemAt(j).GetChar() ==
                                 item[i].GetChar())
@@ -566,8 +504,7 @@ class Game
             }
 
         for (int i = 0; i < enemy.Count; i++)
-            if (weapon.ShotCollisionsWith(enemy[i]))
-            {
+            if (weapon.ShotCollisionsWith(enemy[i])) {
                 texts.Add(new Text((short)enemy[i].GetX(), (short)
                     enemy[i].GetY(), 255, 0, 0, 20,
                     Convert.ToString(weapon.GetDamage())));
@@ -579,16 +516,14 @@ class Game
         if (invulnerable <= 0)
             if (!currentLevel[levelActual].IsLava(player.GetX(), player.GetY(),
                 player.GetX() + player.GetWidth(), player.GetY() +
-                player.GetHeight()))
-            {
+                player.GetHeight())) {
                 texts.Add(new Text((short)player.GetX(), (short)
                             player.GetY(), 255, 0, 0, 30,
                             Convert.ToString(lavaDamage)));
-                lives -= (int) lavaDamage;
+                lives -= (int)lavaDamage;
                 invulnerable = 25;
                 lavaDamage *= 2;
-            }
-            else
+            } else
                 lavaDamage = 1;
     }
 }

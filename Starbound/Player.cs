@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-class Player : Sprite
-{
+class Player : Sprite {
     protected Game myGame;
     protected List<Item>[] inventory;
     protected bool jumping, falling;
@@ -13,8 +12,7 @@ class Player : Sprite
             0, 1, 1, 4, 4, 8, 8, 16, 16, 16, 16, 32, 32, 32
     };
 
-    public Player(Game g)
-    {
+    public Player(Game g) {
         myGame = g;
         LoadSequence(LEFT,
             new string[] { "data/playerLeft1.png", "data/playerLeft2.png",
@@ -44,53 +42,42 @@ class Player : Sprite
         falling = false;
     }
 
-    public int GetStartX()
-    {
+    public int GetStartX() {
         return startX;
     }
 
-    public int GetStartY()
-    {
+    public int GetStartY() {
         return startY;
     }
 
-    public void MoveRight()
-    {
+    public void MoveRight() {
         const int UPTORAMP = 32;
         if (myGame.IsValidMove(x + xSpeed, y, x + width + xSpeed,
-            y + height))
-        {
+            y + height)) {
             x += xSpeed;
             NextFrame();
-        }
-        else if (myGame.IsValidMove(x + xSpeed, y - UPTORAMP, x + width +
-            xSpeed, y - UPTORAMP + height))
-        {
+        } else if (myGame.IsValidMove(x + xSpeed, y - UPTORAMP, x + width +
+              xSpeed, y - UPTORAMP + height)) {
             y -= UPTORAMP;
             x += xSpeed;
         }
     }
 
-    public void MoveLeft()
-    {
+    public void MoveLeft() {
         const int UPTORAMP = 32;
         if (myGame.IsValidMove(x - xSpeed, y, x + width - xSpeed,
-            y + height))
-        {
+            y + height)) {
             x -= xSpeed;
             NextFrame();
-        }
-        else if (myGame.IsValidMove(x - xSpeed, y - UPTORAMP, x + width -
-           xSpeed, y - UPTORAMP + height))
-        {
+        } else if (myGame.IsValidMove(x - xSpeed, y - UPTORAMP, x + width -
+             xSpeed, y - UPTORAMP + height)) {
             y -= UPTORAMP;
             x -= xSpeed;
         }
     }
 
 
-    public void Jump()
-    {
+    public void Jump() {
         if (jumping || falling)
             return;
         jumping = true;
@@ -99,34 +86,28 @@ class Player : Sprite
 
 
     // Starts the jump sequence to the right
-    public void JumpRight()
-    {
+    public void JumpRight() {
         Jump();
         jumpXspeed = xSpeed;
     }
 
 
-    public void JumpLeft()
-    {
+    public void JumpLeft() {
         Jump();
         jumpXspeed = -xSpeed;
     }
 
-    public override void Move()
-    {
+    public override void Move() {
 
         // If the player is not jumping, it might need to fall down
-        if (!jumping)
-        {
+        if (!jumping) {
             if (myGame.IsValidMove(
-                x, y + ySpeed, x + width, y + height + ySpeed))
-            {
+                x, y + ySpeed, x + width, y + height + ySpeed)) {
                 y += ySpeed;
             }
-        }
-        else
-        // If jumping, it must go on with the sequence
-        {
+        } else
+          // If jumping, it must go on with the sequence
+          {
             // Let's calculate the next positions
             short nextX = (short)(x + jumpXspeed);
             short nextY = (short)(y + jumpSteps[jumpFrame]);
@@ -134,22 +115,19 @@ class Player : Sprite
             // If the player can still move, let's do it
             if (myGame.IsValidMove(
                 nextX, nextY,
-                nextX + width, nextY + height))
-            {
+                nextX + width, nextY + height)) {
                 x = nextX;
                 y = nextY;
             }
             // If it cannot move, then it must fall
-            else
-            {
+            else {
                 jumping = false;
                 jumpFrame = 0;
             }
 
             // And let's prepare the next frame, maybe with a different speed
             jumpFrame++;
-            if (jumpFrame >= jumpSteps.Length)
-            {
+            if (jumpFrame >= jumpSteps.Length) {
                 jumping = false;
                 jumpFrame = 0;
             }
@@ -159,12 +137,10 @@ class Player : Sprite
     /// To break the stone
     /// </summary>
     /// <param name="CurrentLevel"></param>
-    public bool Break(Level CurrentLevel, int x, int y)
-    {
+    public bool Break(Level CurrentLevel, int x, int y) {
         if ((CurrentLevel.GetPosicion((short)x, (short)y) == '_' ||
             CurrentLevel.GetPosicion((short)x, (short)y) == 'w')
-            && Mouse.Clic() == 1)
-        {
+            && Mouse.Clic() == 1) {
             CurrentLevel.DeletePosition((short)x, (short)y);
             return true;
         }
@@ -172,34 +148,28 @@ class Player : Sprite
     }
 
 
-    public void AddToInventory(Item toAdd)
-    {
+    public void AddToInventory(Item toAdd) {
         bool contains = false;
         for (int i = 0; i < positionOfInventory && !contains; i++)
-            if (inventory[i].Contains(toAdd))
-            {
+            if (inventory[i].Contains(toAdd)) {
                 inventory[i].Add(toAdd);
                 contains = true;
             }
-        if (!contains && positionOfInventory < 39)
-        {
+        if (!contains && positionOfInventory < 39) {
             inventory[positionOfInventory].Add(toAdd);
             positionOfInventory++;
         }
     }
 
-    public void RemoveInventory()
-    {
-        // TO DO
+    public void RemoveInventory() {
+        // TODO
     }
 
-    public bool ContainsItems()
-    {
+    public bool ContainsItems() {
         return inventory.Length > 0;
     }
 
-    public Item GetItemAt(int i)
-    {
+    public Item GetItemAt(int i) {
         return inventory[i][0];
     }
 }

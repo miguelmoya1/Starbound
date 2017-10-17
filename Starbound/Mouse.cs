@@ -1,39 +1,27 @@
-﻿class Mouse
-{
+﻿class Mouse {
     public static bool ColisionWith(int xMin, int yMin, int xMax, int yMax,
-            bool clic)
-    {
-        int x, y;
-        int mouse = Hardware.GetMouse(out x, out y);
-        if (clic)
-        {
-            if (mouse == 1 && ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax)))
+            bool clic) {
+        if (clic) {
+            if (Hardware.GetMouse(out int x, out int y) == 1 && ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax)))
                 return true;
-        }
-        else 
-            if (mouse == 4 && ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax)))
-                return true;
+        } else
+            if (Hardware.GetMouse(out int x, out int y) == 4 && ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax)))
+            return true;
         return false;
     }
 
-    public static int GetX()
-    {
-        int x, y;
-        Hardware.GetMouse(out x, out y);
+    public static int GetX() {
+        Hardware.GetMouse(out int x, out int y);
         return x;
     }
 
-    public static int GetY()
-    {
-        int x, y;
-        Hardware.GetMouse(out x, out y);
+    public static int GetY() {
+        Hardware.GetMouse(out int x, out int y);
         return y;
     }
 
 
-    public static int Clic()
-    {
-        int x, y;
-        return Hardware.GetMouse(out x, out y);
+    public static int Clic() {
+        return Hardware.GetMouse(out int x, out int y);
     }
 }

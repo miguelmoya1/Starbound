@@ -1,9 +1,7 @@
 ﻿using System;
-class Rain : Sprite
-{
+class Rain : Sprite {
     Level currentLevel;
-    public Rain(int x, int y, int type, Level g)
-    {
+    public Rain(int x, int y, int type, Level g) {
         if (type == 0)
             LoadImage("data/rain.jpg");
         else if (type == 1)
@@ -19,8 +17,7 @@ class Rain : Sprite
         height = 2;
         currentLevel = g;
     }
-    public override void Move()
-    {
+    public override void Move() {
         if (currentLevel.IsValidMove(
                 x, y + ySpeed, x + width, y + height + ySpeed))
             y += ySpeed;

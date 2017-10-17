@@ -10,3 +10,10 @@ C:\Users\Miiguel\Dropbox\1DAM\Starbound\Starbound\obj\Debug\Starbound.pdb
 C:\Users\Miiguel\Dropbox\1DAM\Starbound\Starbound\bin\Debug\Starbound.exe
 C:\Users\Miiguel\Dropbox\1DAM\Starbound\Starbound\bin\Debug\Starbound.pdb
 C:\Users\Miiguel\Dropbox\1DAM\Starbound\Starbound\obj\Debug\Starbound.csprojResolveAssemblyReference.cache
+C:\Users\Miiguel\Desktop\Starbound\Starbound\bin\Debug\Starbound.exe.config
+C:\Users\Miiguel\Desktop\Starbound\Starbound\bin\Debug\Starbound.exe
+C:\Users\Miiguel\Desktop\Starbound\Starbound\bin\Debug\Starbound.pdb
+C:\Users\Miiguel\Desktop\Starbound\Starbound\obj\Debug\Starbound.csprojResolveAssemblyReference.cache
+C:\Users\Miiguel\Desktop\Starbound\Starbound\obj\Debug\Starbound.csproj.CoreCompileInputs.cache
+C:\Users\Miiguel\Desktop\Starbound\Starbound\obj\Debug\Starbound.exe
+C:\Users\Miiguel\Desktop\Starbound\Starbound\obj\Debug\Starbound.pdb
