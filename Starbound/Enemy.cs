@@ -18,6 +18,7 @@ class Enemy : Sprite {
         height = 64;
         live = 100;
         currentLevel = g;
+        
         ChangeDirection(RIGHT);
 
     }
